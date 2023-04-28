@@ -88,57 +88,98 @@ function generatePassword() {
     return randomSpecialChar;
   }
 
-  //variable to store boolean values of selections as an array
-  var allOptions = [includeLower, includeUpper, includeNumeric, includeSpecial];
+  var passwordArray = [0,0,0,0];
 
-  //function to change allOptions booleans to randomly generated values of appropriate type, change to "aa" if not selected for future use
-  function randomOptions() {
-  if (allOptions[0]){
-    allOptions[0] = randomLower();
+  function generateRandoms() {
+  passwordArray = [0,0,0,0];
+  if (includeLower && !includeUpper && !includeNumeric && !includeSpecial) {
+      passwordArray[0] = randomLower();
+      passwordArray.pop();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (!includeLower && includeUpper && !includeNumeric && !includeSpecial){
+      passwordArray[0] = randomNumber();
+      passwordArray.pop();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (!includeLower && !includeUpper && includeNumeric && !includeSpecial){
+      passwordArray[0] = randomNumber();
+      passwordArray.pop();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (!includeLower && !includeUpper && !includeNumeric && includeSpecial){
+      passwordArray[0] = randomChar();
+      passwordArray.pop();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (includeLower && includeUpper && !includeNumeric && !includeSpecial){
+      passwordArray[0] = randomLower();
+      passwordArray[1] = randomUpper();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (includeLower && !includeUpper && includeNumeric && !includeSpecial){
+      passwordArray[0] = randomLower();
+      passwordArray[1] = randomNumber();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (includeLower && !includeUpper && !includeNumeric && includeSpecial){
+      passwordArray[0] = randomLower();
+      passwordArray[1] = randomChar();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (!includeLower && includeUpper && includeNumeric && !includeSpecial){
+      passwordArray[0] = randomUpper();
+      passwordArray[1] = randomNumber();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (!includeLower && includeUpper && !includeNumeric && includeSpecial){
+      passwordArray[0] = randomUpper();
+      passwordArray[1] = randomChar();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (!includeLower && !includeUpper && includeNumeric && includeSpecial){
+      passwordArray[0] = randomNumber();
+      passwordArray[1] = randomChar();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (includeLower && includeUpper && includeNumeric && !includeSpecial){
+      passwordArray[0] = randomLower();
+      passwordArray[1] = randomUpper();
+      passwordArray[2] = randomNumber();
+      passwordArray.pop();
+      passwordArray.pop();
+  } else if (includeLower && includeUpper && !includeNumeric && includeSpecial){
+      passwordArray[0] = randomLower();
+      passwordArray[1] = randomUpper();
+      passwordArray[2] = randomChar();
+      passwordArray.pop();
+  } else if (!includeLower && includeUpper && includeNumeric && includeSpecial) {
+      passwordArray[0] = randomUpper();
+      passwordArray[1] = randomNumber();
+      passwordArray[2] = randomChar();
+      passwordArray.pop();
   } else {
-    allOptions[0] = "aa";
+      passwordArray[0] = randomLower();
+      passwordArray[1] = randomUpper();
+      passwordArray[2] = randomNumber();
+      passwordArray[3] = randomChar();
   }
-  if (allOptions[1]){
-    allOptions[1] = randomUpper();
-  } else {
-    allOptions[1] = "aa";
-  }
-  if (allOptions[2]){
-    allOptions[2] = randomNumber();
-  } else {
-    allOptions[2] = "aa";
-  }
-  if (allOptions[3]){
-    allOptions[3] = randomChar();
-  } else {
-    allOptions[3] = "aa";
-  }
+  return passwordArray;
   }
 
-  //create an array to save pw values with inputed length using placeholder string value
-  var passwordArray = [];
+  var charContainer = [];
   for (i=0; i<passwordLength; i++){
-    passwordArray[i] = "placeholder";
+    charContainer[i] = "placeholder";
   }
 
-  //function will pick one from the four generated options to use as password value
-  var passwordValue;
-  function optionsPicker() {
-    var pickone = Math.floor(Math.random() * 4);
-    randomOptions();
-    passwordValue = allOptions[pickone];
-    return passwordValue;
-  }
-
-  //use options picker function to replace placeholder values in array with randomized value selected
   for (i=0; i<passwordLength; i++){
-    randomOptions();
-    optionsPicker();
-    passwordArray[i] = passwordValue;
+    generateRandoms();
+    var pickone = Math.floor(Math.random() * passwordArray.length);
+    charContainer[i] = passwordArray[pickone];
   }
 
-  var password = passwordArray.join("");
-  
+  var password = charContainer.join("");
+
 return password;
 
 }
