@@ -1,4 +1,5 @@
 // Assignment Code
+// Assigns variable to generate button to use later with event listener 'on click'
 var generateBtn = document.querySelector("#generate");
 
 // Add event listener to generate button
@@ -7,12 +8,21 @@ generateBtn.addEventListener("click", writePassword);
 
 // Write password to the #password input
 function generatePassword() {
+
   //conditional while loop here if input does not fall between 8 and 128 - will force user to choose an acceptable value
   var passwordLength = prompt("Choose a length for your password. Please choose a value between 8 and 128 characters.");
+  var passwordLengthInt = parseInt(passwordLength);
 
-  while (passwordLength > 128 || passwordLength < 8) {
+  while (isNaN(passwordLengthInt) == true) {
+    alert("Please input a numerical value between 8 and 128.")
+    var passwordLength = prompt("Choose a length for your password. Please choose a value between 8 and 128 characters.");
+    var passwordLengthInt = parseInt(passwordLength);
+  }
+
+  while (passwordLengthInt > 128 || passwordLengthInt < 8) {
     alert("Please choose a value between 8 and 128.")
     var passwordLength = prompt("Choose a length for your password. Please choose a value between 8 and 128 characters.");
+    var passwordLengthInt = parseInt(passwordLength);
   }
 
   //create variables to store boolean values for which parameters are selected
@@ -35,33 +45,33 @@ function generatePassword() {
   //easier way to do this: alert user for each property selected with a loop! change if time
   var allChoices = [includeLower, includeUpper, includeNumeric, includeSpecial];
   if (includeLower && !includeUpper && !includeNumeric && !includeSpecial) {
-    alert("Your password of " + passwordLength + " characters will now be generated using only lowercase letters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using only lowercase letters.");
   } else if (!includeLower && includeUpper && !includeNumeric && !includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using only uppercase letters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using only uppercase letters.");
   } else if (!includeLower && !includeUpper && includeNumeric && !includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using only numbers.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using only numbers.");
   } else if (!includeLower && !includeUpper && !includeNumeric && includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using only special characters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using only special characters.");
   } else if (includeLower && includeUpper && !includeNumeric && !includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using lowercase and uppercase letters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using lowercase and uppercase letters.");
   } else if (includeLower && !includeUpper && includeNumeric && !includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using lowercase letters and numbers.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using lowercase letters and numbers.");
   } else if (includeLower && !includeUpper && !includeNumeric && includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using lowercase letters and special characters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using lowercase letters and special characters.");
   } else if (!includeLower && includeUpper && includeNumeric && !includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using uppercase letters and numbers.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using uppercase letters and numbers.");
   } else if (!includeLower && includeUpper && !includeNumeric && includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using uppercase letters and special characters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using uppercase letters and special characters.");
   } else if (!includeLower && !includeUpper && includeNumeric && includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using numbers and special characters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using numbers and special characters.");
   } else if (includeLower && includeUpper && includeNumeric && !includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using lowercase letter, uppercase letters, and numbers.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using lowercase letter, uppercase letters, and numbers.");
   } else if (includeLower && includeUpper && !includeNumeric && includeSpecial){
-    alert("Your password of " + passwordLength + " characters will now be generated using lowercase letters, uppercase letters, and special characters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using lowercase letters, uppercase letters, and special characters.");
   } else if (!includeLower && includeUpper && includeNumeric && includeSpecial) {
-    alert("Your password of " + passwordLength + " characters will now be generated using uppercase letters, numbers and special characters.");
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using uppercase letters, numbers and special characters.");
   } else {
-    alert("Your password of " + passwordLength + " characters will now be generated using lowercase letters, uppercase letters, numbers and special characters.")
+    alert("Your password of " + passwordLengthInt + " characters will now be generated using lowercase letters, uppercase letters, numbers and special characters.")
   }
 
   //Functions for generating random lower/upper/special characters
@@ -90,6 +100,7 @@ function generatePassword() {
 
   var passwordArray = [0,0,0,0];
 
+  //function to generate random selection of password values based on user input
   function generateRandoms() {
   passwordArray = [0,0,0,0];
   if (includeLower && !includeUpper && !includeNumeric && !includeSpecial) {
@@ -98,7 +109,7 @@ function generatePassword() {
       passwordArray.pop();
       passwordArray.pop();
   } else if (!includeLower && includeUpper && !includeNumeric && !includeSpecial){
-      passwordArray[0] = randomNumber();
+      passwordArray[0] = randomUpper();
       passwordArray.pop();
       passwordArray.pop();
       passwordArray.pop();
@@ -167,17 +178,20 @@ function generatePassword() {
   return passwordArray;
   }
 
+  //create array with placeholder values to be replaced with password values
   var charContainer = [];
-  for (i=0; i<passwordLength; i++){
+  for (i=0; i<passwordLengthInt; i++){
     charContainer[i] = "placeholder";
   }
 
-  for (i=0; i<passwordLength; i++){
+  //loop generateRandom function to replace placeholder array values with randomly generated values based on user input
+  for (i=0; i<passwordLengthInt; i++){
     generateRandoms();
     var pickone = Math.floor(Math.random() * passwordArray.length);
     charContainer[i] = passwordArray[pickone];
   }
 
+  //join password array into a string and output to password variable to send to HTML
   var password = charContainer.join("");
 
 return password;
